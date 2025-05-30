@@ -3,8 +3,6 @@ my-app/
 ├── backend/                    # Серверная часть (Node.js + Express + MSSQL)
 │   ├── controllers/            # Логика обработки запросов (Controller)
 │   │   └── clientController.js
-│   ├── models/                 # Модели и работа с БД
-│   │   └── clientModel.js
 │   ├── routes/                 # API маршруты
 │   │   └── clientRoutes.js
 │   ├── config/                 # Конфигурации

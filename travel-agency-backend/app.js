@@ -1,29 +1,39 @@
-const express = require("express");
+// const express = require("express");
+// const pool = require("./config/db");
 
-import { pool } from "./config/db.js"
-import Querys from './controllers/controllers.js';
+import express from 'express'
+import poolConnect from './config/db.js'
+import Querys from './controllers/controllers.js'
 
-const app = express();
+const app = express()
 
-app.use(json());
+app.use(express.json())
 
-app.get("/clients", async (req, res) => {
+app.get('/clients', async (req, res) => {
   try {
-    const result = await pool.request()
-    .query(new Querys(tableName).selectByColumn('Имя', 'Алексей'))
-    .then((recordset) => console.log(recordset));
+    // const result = await pool.request()
+    // .query(new Querys(tableName).selectByColumn('Имя', 'Алексей'))
+    // .then((recordset) => console.log(recordset));
+
+    const pool = await poolConnect()
+
+    const result = pool
+      .request()
+      .query(new Querys('Клиент').selectByColumn('Имя', 'Алексей'))
     
-    res.json(result);
+    res.json((await result).recordset)
   } catch (err) {
     if (err.name === 'RequestError') {
-      console.error("Ошибка запроса:", err);
+      console.error('Ошибка запроса:', err)
     } else {
-      console.error("Ошибка при получении клиентов:", err);
+      console.error('Ошибка при получении клиентов:', err)
     }
-    
-    res.status(500).send("Ошибка сервера");
-  }
-});
 
-const port = 3000;
-app.listen(port, () => console.log(`Сервер запущен на http://localhost:${port}`));
+    res.status(500).send('Ошибка сервера')
+  }
+})
+
+export default app
+
+// const port = 3000;
+// app.listen(port, () => console.log(`Сервер запущен на http://localhost:${port}`));

@@ -1,22 +1,24 @@
-const sql = require("mssql");
-require("dotenv").config();
+// const sql = require("mssql");
+// require("dotenv").config();
+
+import sql from 'mssql'
 
 const config = {
-  server: "BETTERTHANMAC",
-  database:  "TravelAgency",
-  user: "admin_user",
-  password: "admin_user",
+  server: 'localhost', // "BETTERTHANMAC",
+  database: 'TravelAgency',
+  user: 'admin_user',
+  password: 'admin_user',
   options: {
     trustServerCertificate: true,
   },
-};
+}
 
-module.exports = async () => {
+export default async function poolConnect() {
   try {
-    const pool = await sql.connect(config);
-    return pool;
+    const pool = await sql.connect(config)
+    return pool
   } catch (err) {
-    console.error("Ошибка подключения к БД:", err);
-    throw err;
+    console.error('Ошибка подключения к БД:', err)
+    throw err
   }
 }
