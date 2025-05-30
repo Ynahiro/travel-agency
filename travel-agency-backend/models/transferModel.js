@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
 export async function selectALLTransfer() {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Трансфер`)
     return resut.recordset
@@ -11,7 +11,7 @@ export async function selectALLTransfer() {
 }
 
 export async function selectTransferById(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(
       `SELECT * FROM Трансфер WHERE Id = ${id}`
@@ -22,11 +22,12 @@ export async function selectTransferById(id) {
   }
 }
 
-export async function selectTransferByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectTransferByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Трансфер WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Трансфер WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -35,7 +36,7 @@ export async function selectTransferByColumn(columnName, value) {
 }
 
 export async function insertTransfer(transfer) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { city, typeOfTransfer } = transfer
   try {
     const result = await sql.query(`
@@ -49,7 +50,7 @@ export async function insertTransfer(transfer) {
 }
 
 export async function updateTransfer(id, transfer) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { city, typeOfTransfer } = transfer
   try {
     const result = await sql.query(`
@@ -65,7 +66,7 @@ export async function updateTransfer(id, transfer) {
 }
 
 export async function deleteTransfer(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Трансфер WHERE Id = ${id}`)
     return `Трансфер ${id} успешно удален из таблицы!`

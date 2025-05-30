@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
 export async function selectALLClinets() {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Клиент`)
     return resut.recordset
@@ -11,7 +11,7 @@ export async function selectALLClinets() {
 }
 
 export async function selectClientById(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`SELECT * FROM Клиент WHERE Id = ${id}`)
     return result.recordset
@@ -20,11 +20,12 @@ export async function selectClientById(id) {
   }
 }
 
-export async function selectClientByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectClientByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Клиент WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Клиент WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -33,7 +34,7 @@ export async function selectClientByColumn(columnName, value) {
 }
 
 export async function insertClient(client) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { surname, name, patronymic, birthdy, phoneNum, email, passportId } = client
   try {
     const result = await sql.query(`
@@ -47,7 +48,7 @@ export async function insertClient(client) {
 }
 
 export async function updateClient(id, client) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { surname, name, patronymic, birthdy, phoneNum, email, passportId } = client
   try {
     const result = await sql.query(`
@@ -68,7 +69,7 @@ export async function updateClient(id, client) {
 }
 
 export async function deleteClient(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Клиент WHERE Id = ${id}`)
     return `Клиент ${id} успешно удален из таблицы!`
@@ -77,7 +78,7 @@ export async function deleteClient(id) {
   }
 }
 
-// const pool = await poolConnect()
+// await poolConnect()
 //     try {
 //         const result = await sql.query(``)
 //         return result.recordset

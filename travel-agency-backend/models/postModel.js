@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
 export async function selectALLPost() {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Должность`)
     return resut.recordset
@@ -11,7 +11,7 @@ export async function selectALLPost() {
 }
 
 export async function selectPostById(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`SELECT * FROM Должность WHERE Id = ${id}`)
     return result.recordset
@@ -20,11 +20,12 @@ export async function selectPostById(id) {
   }
 }
 
-export async function selectPostByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectPostByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Должность WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Должность WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -33,7 +34,7 @@ export async function selectPostByColumn(columnName, value) {
 }
 
 export async function insertPost(post) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { title, salaty } = post
   try {
     const result = await sql.query(`
@@ -47,7 +48,7 @@ export async function insertPost(post) {
 }
 
 export async function updatePost(id, post) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { title, salaty } = post
   try {
     const result = await sql.query(`
@@ -63,7 +64,7 @@ export async function updatePost(id, post) {
 }
 
 export async function deletePost(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Должность WHERE Id = ${id}`)
     return `Должность ${id} успешно удалена из таблицы!`

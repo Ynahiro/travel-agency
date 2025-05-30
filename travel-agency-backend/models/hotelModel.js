@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
 export async function selectALLHotel() {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Отель`)
     return resut.recordset
@@ -11,7 +11,7 @@ export async function selectALLHotel() {
 }
 
 export async function selectHotelById(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`SELECT * FROM Отель WHERE Id = ${id}`)
     return result.recordset
@@ -20,11 +20,12 @@ export async function selectHotelById(id) {
   }
 }
 
-export async function selectHotelByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectHotelByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Отель WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Отель WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -33,7 +34,7 @@ export async function selectHotelByColumn(columnName, value) {
 }
 
 export async function insertHotel(hotel) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { title, category, city } = hotel
   try {
     const result = await sql.query(`
@@ -47,7 +48,7 @@ export async function insertHotel(hotel) {
 }
 
 export async function updateHotel(id, hotel) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { title, category, city } = hotel
   try {
     const result = await sql.query(`
@@ -64,7 +65,7 @@ export async function updateHotel(id, hotel) {
 }
 
 export async function deleteHotel(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Отель WHERE Id = ${id}`)
     return `Отель ${id} успешно удален из таблицы!`

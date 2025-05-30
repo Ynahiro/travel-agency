@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
-export async function selectALLСountry() {
-  const pool = await poolConnect()
+export async function selectALLCountry() {
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Страна`)
     return resut.recordset
@@ -10,8 +10,8 @@ export async function selectALLСountry() {
   }
 }
 
-export async function selectСountryById(id) {
-  const pool = await poolConnect()
+export async function selectCountryById(id) {
+  await poolConnect()
   try {
     const result = await sql.query(
       `SELECT * FROM Страна WHERE Id = ${id}`
@@ -22,11 +22,12 @@ export async function selectСountryById(id) {
   }
 }
 
-export async function selectСountryByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectCountryByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Страна WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Страна WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -34,8 +35,8 @@ export async function selectСountryByColumn(columnName, value) {
   }
 }
 
-export async function insertСountry(country) {
-  const pool = await poolConnect()
+export async function insertCountry(country) {
+  await poolConnect()
   const { _country } = country
   try {
     const result = await sql.query(`
@@ -48,8 +49,8 @@ export async function insertСountry(country) {
   }
 }
 
-export async function updateСountry(id, country) {
-  const pool = await poolConnect()
+export async function updateCountry(id, country) {
+  await poolConnect()
   const { _country } = country
   try {
     const result = await sql.query(`
@@ -63,8 +64,8 @@ export async function updateСountry(id, country) {
   }
 }
 
-export async function deleteСountry(id) {
-  const pool = await poolConnect()
+export async function deleteCountry(id) {
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Страна WHERE Id = ${id}`)
     return `Страна ${id} успешно удалена из таблицы!`

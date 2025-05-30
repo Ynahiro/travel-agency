@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
 export async function selectALLSale() {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Продажа`)
     return resut.recordset
@@ -11,7 +11,7 @@ export async function selectALLSale() {
 }
 
 export async function selectSaleById(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(
       `SELECT * FROM Продажа WHERE Id = ${id}`
@@ -22,11 +22,12 @@ export async function selectSaleById(id) {
   }
 }
 
-export async function selectSaleByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectSaleByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Продажа WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Продажа WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -35,7 +36,7 @@ export async function selectSaleByColumn(columnName, value) {
 }
 
 export async function insertSale(sale) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { dateOfSale, departureDate, discount, travelPackageId, clientId, employeeId } = sale
   try {
     const result = await sql.query(`
@@ -49,7 +50,7 @@ export async function insertSale(sale) {
 }
 
 export async function updateSale(id, sale) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { dateOfSale, departureDate, discount, travelPackageId, clientId, employeeId } = sale
   try {
     const result = await sql.query(`
@@ -69,7 +70,7 @@ export async function updateSale(id, sale) {
 }
 
 export async function deleteSale(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Продажа WHERE Id = ${id}`)
     return `Продажа ${id} успешно удалена из таблицы!`

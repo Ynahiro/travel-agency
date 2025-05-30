@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
 export async function selectALLDuration() {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Длительность`)
     return resut.recordset
@@ -11,7 +11,7 @@ export async function selectALLDuration() {
 }
 
 export async function selectDurationById(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(
       `SELECT * FROM Длительность WHERE Id = ${id}`
@@ -22,11 +22,12 @@ export async function selectDurationById(id) {
   }
 }
 
-export async function selectDurationByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectDurationByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Длительность WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Длительность WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -35,7 +36,7 @@ export async function selectDurationByColumn(columnName, value) {
 }
 
 export async function insertDuration(duration) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { _duration, travelPackagePrice, hotelPrice } = duration
   try {
     const result = await sql.query(`
@@ -49,7 +50,7 @@ export async function insertDuration(duration) {
 }
 
 export async function updateDuration(id, duration) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { _duration, travelPackagePrice, hotelPrice } = duration
   try {
     const result = await sql.query(`
@@ -66,7 +67,7 @@ export async function updateDuration(id, duration) {
 }
 
 export async function deleteDuration(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Длительность WHERE Id = ${id}`)
     return `Длительность ${id} успешно удален из таблицы!`

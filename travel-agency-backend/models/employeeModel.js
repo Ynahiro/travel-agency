@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
 export async function selectALLEmployee() {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Сотрудник`)
     return resut.recordset
@@ -11,7 +11,7 @@ export async function selectALLEmployee() {
 }
 
 export async function selectEmployeeById(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(
       `SELECT * FROM Сотрудник WHERE Id = ${id}`
@@ -22,11 +22,12 @@ export async function selectEmployeeById(id) {
   }
 }
 
-export async function selectEmployeeByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectEmployeeByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Сотрудник WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Сотрудник WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -35,7 +36,7 @@ export async function selectEmployeeByColumn(columnName, value) {
 }
 
 export async function insertEmployee(employee) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { surname, name, patronymic, phoneNum, age, post } = employee
   try {
     const result = await sql.query(`
@@ -49,7 +50,7 @@ export async function insertEmployee(employee) {
 }
 
 export async function updateEmployee(id, employee) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { surname, name, patronymic, phoneNum, age, post } = employee
   try {
     const result = await sql.query(`
@@ -69,7 +70,7 @@ export async function updateEmployee(id, employee) {
 }
 
 export async function deleteEmployee(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Сотрудник WHERE Id = ${id}`)
     return `Сотрудник ${id} успешно удален из таблицы!`

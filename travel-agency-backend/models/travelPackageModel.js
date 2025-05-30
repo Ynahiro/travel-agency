@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
 export async function selectALLTravelPackage() {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Путевка`)
     return resut.recordset
@@ -11,7 +11,7 @@ export async function selectALLTravelPackage() {
 }
 
 export async function selectTravelPackageById(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(
       `SELECT * FROM Путевка WHERE Id = ${id}`
@@ -22,11 +22,12 @@ export async function selectTravelPackageById(id) {
   }
 }
 
-export async function selectTravelPackageByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectTravelPackageByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Путевка WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Путевка WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -35,7 +36,7 @@ export async function selectTravelPackageByColumn(columnName, value) {
 }
 
 export async function insertTravelPackage(travelPackage) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { title, durationId, transferId, hotelId, city } = travelPackage
   try {
     const result = await sql.query(`
@@ -49,7 +50,7 @@ export async function insertTravelPackage(travelPackage) {
 }
 
 export async function updateTravelPackage(id, travelPackage) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { title, durationId, transferId, hotelId } = travelPackage
   try {
     const result = await sql.query(`
@@ -68,7 +69,7 @@ export async function updateTravelPackage(id, travelPackage) {
 }
 
 export async function deleteTravelPackage(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Путевка WHERE Id = ${id}`)
     return `Путевка ${id} успешно удалена из таблицы!`

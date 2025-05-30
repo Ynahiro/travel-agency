@@ -1,7 +1,7 @@
 import { poolConnect, sql } from '../config/db.js'
 
 export async function selectALLPassport() {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Паспорт`)
     return resut.recordset
@@ -11,7 +11,7 @@ export async function selectALLPassport() {
 }
 
 export async function selectPassportById(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(
       `SELECT * FROM Паспорт WHERE Id = ${id}`
@@ -22,11 +22,12 @@ export async function selectPassportById(id) {
   }
 }
 
-export async function selectPassportByColumn(columnName, value) {
-  const pool = await poolConnect()
+export async function selectPassportByColumn(column) {
+  await poolConnect()
+  const { columnTitle, value } = column
   try {
     const result = await sql.query(
-      `SELECT * FROM Паспорт WHERE ${columnName} = '${value}'`
+      `SELECT * FROM Паспорт WHERE ${columnTitle} = '${value}'`
     )
     return result.recordset
   } catch (err) {
@@ -35,7 +36,7 @@ export async function selectPassportByColumn(columnName, value) {
 }
 
 export async function insertPassport(passport) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { seriesAndNumber, issuedBy, dateOfIssue } = passport
   try {
     const result = await sql.query(`
@@ -49,7 +50,7 @@ export async function insertPassport(passport) {
 }
 
 export async function updatePassport(id, passport) {
-  const pool = await poolConnect()
+  await poolConnect()
   const { seriesAndNumber, issuedBy, dateOfIssue } = passport
   try {
     const result = await sql.query(`
@@ -66,7 +67,7 @@ export async function updatePassport(id, passport) {
 }
 
 export async function deletePassport(id) {
-  const pool = await poolConnect()
+  await poolConnect()
   try {
     const result = await sql.query(`DELETE FROM Паспорт WHERE Id = ${id}`)
     return `Паспорт ${id} успешно удален из таблицы!`
