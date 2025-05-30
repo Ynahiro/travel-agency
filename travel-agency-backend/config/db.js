@@ -13,7 +13,8 @@ const config = {
   },
 }
 
-export default async function poolConnect() {
+
+export async function poolConnect() {
   try {
     const pool = await sql.connect(config)
     return pool
@@ -22,3 +23,5 @@ export default async function poolConnect() {
     throw err
   }
 }
+
+export { sql }
