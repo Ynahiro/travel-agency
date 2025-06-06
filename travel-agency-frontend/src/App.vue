@@ -1,47 +1,33 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <NavBar />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+  <RouterView />
 
-  <main>
-    <TheWelcome />
-  </main>
+  <div>
+    <h1>Список клиентов</h1>
+    <ul v-if="clients.length" class="bg-black">
+      <li v-for="client in clients" :key="client['Id']" class="text-white">
+        {{ client['Email'] }} — {{ client.Email }}
+      </li>
+    </ul>
+    <p v-else>Загрузка клиентов...</p>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+import NavBar from './components/NavBar.vue';
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+const clients = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/api/client');
+    clients.value = response.data;
+  } catch (err) {
+    console.error('Ошибка при получении клиентов:', err);
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+});
+</script>
