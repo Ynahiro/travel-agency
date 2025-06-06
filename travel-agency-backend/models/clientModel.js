@@ -1,6 +1,6 @@
 import { poolConnect, sql } from '../config/db.js'
 
-export async function selectALLClinets() {
+export async function selectALLClients() {
   await poolConnect()
   try {
     const resut = await sql.query(`SELECT * FROM Клиент`)

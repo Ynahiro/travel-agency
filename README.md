@@ -1,8 +1,10 @@
---Дерево проекта--
+--UX--
 my-app/
 ├── backend/                    # Серверная часть (Node.js + Express + MSSQL)
 │   ├── controllers/            # Логика обработки запросов (Controller)
 │   │   └── clientController.js
+│   ├── models/                 # Модели и работа с БД
+│   │   └── clientModel.js
 │   ├── routes/                 # API маршруты
 │   │   └── clientRoutes.js
 │   ├── config/                 # Конфигурации
@@ -33,3 +35,13 @@ my-app/
 ├── .gitignore
 ├── package.json               # Корневой (можно использовать монорепу или отдельно для backend/frontend)
 └── README.md
+
+
+--UI--
+├──Меню
+    └──Главная
+    └──Выбор таблицы
+    └──Вход/Выход
+
+Главная страница
+

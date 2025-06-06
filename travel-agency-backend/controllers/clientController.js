@@ -1,8 +1,8 @@
 import * as clientModel from '../models/clientModel.js'
 
-export const selectALLClinets = async (req, res) => {
+export const selectALLClients = async (req, res) => {
   try {
-    const clients = await clientModel.selectALLClinets()
+    const clients = await clientModel.selectALLClients()
     res.json(clients)
   } catch (error) {
     console.error('Ошибка при получении клиентов:', error)
