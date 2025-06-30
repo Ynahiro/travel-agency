@@ -44,10 +44,9 @@ export const insertEmployee = async (req, res) => {
 }
 
 export const updateEmployee = async (req, res) => {
-  const id = req.params.id
   const employeeData = req.body
   try {
-    const employee = await employeeModel.updateEmployee(id, employeeData)
+    const employee = await employeeModel.updateEmployee(employeeData)
     res.json(employee)
   } catch (error) {
     console.error('Ошибка при обновлении сотрудника:', error)

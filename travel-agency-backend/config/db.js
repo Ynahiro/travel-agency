@@ -1,10 +1,7 @@
-// const sql = require("mssql");
-// require("dotenv").config();
-
 import sql from 'mssql'
 
 const config = {
-  server: 'localhost', // "BETTERTHANMAC",
+  server: 'BETTERTHANMAC', // "BETTERTHANMAC" localhost,
   database: 'TravelAgency',
   user: 'admin_user',
   password: 'admin_user',

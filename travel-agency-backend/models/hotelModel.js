@@ -39,7 +39,7 @@ export async function insertHotel(hotel) {
   try {
     const result = await sql.query(`
             INSERT INTO Отель (Название, Категория, Город)
-            VALUES (${title}, ${category}, ${city})
+            VALUES ('${title}', '${category}', '${city}')
             `)
     return 'Данные успешно добалены!'
   } catch (err) {
@@ -47,17 +47,17 @@ export async function insertHotel(hotel) {
   }
 }
 
-export async function updateHotel(id, hotel) {
+export async function updateHotel(hotel) {
   await poolConnect()
-  const { title, category, city } = hotel
+  const { id, title, category, city } = hotel
   try {
-    const result = await sql.query(`
-            UPDATE Отель
-            SET Название = ${title},
-                Категория = ${category},
-                Город = ${city}                
-            WHERE Id = ${id}
-            `)
+    await sql.query(`
+      UPDATE Отель
+      SET Название = '${title}',
+          Категория = '${category}',
+          Город = '${city}'
+      WHERE Id = ${id}
+      `)
     return 'Данные успешно обнавлены!'
   } catch (err) {
     throw new Error('Ошибка при обновлении отеля:', err)

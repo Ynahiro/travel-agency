@@ -6,7 +6,9 @@ export async function selectALLSale() {
     const resut = await sql.query(`SELECT * FROM Продажа`)
     return resut.recordset
   } catch (err) {
-    throw new Error('Ошибка при пролучение продажи:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -14,11 +16,28 @@ export async function selectSaleById(id) {
   await poolConnect()
   try {
     const result = await sql.query(
-      `SELECT * FROM Продажа WHERE Id = ${id}`
+      `SELECT
+          s.Дата_продажи AS saleDate,
+          s.Дата_отправления AS departureTime,
+          DATEADD(DAY, d.Продолжительность, s.Дата_отправления) AS returnDate,          
+          p.Название AS tourTitle,          
+          CONCAT(клиент.Фамилия, ' ', клиент.Имя, ' ', клиент.Отчество) AS clientFullName,
+          CONCAT(сотр.Фамилия, ' ', сотр.Имя, ' ', сотр.Отчество) AS sellerFullName,
+          d.Стоимость_путевки AS totalCost,
+          t.Тип_трансфера AS transferType
+      FROM Продажа s
+      JOIN Путевка p ON s.[Путевка_Id] = p.Id
+      JOIN Длительность d ON p.[Длительность_Id] = d.Id
+      JOIN Трансфер t ON p.[Трансфер_Id] = t.Id
+      JOIN Клиент клиент ON s.[Клиент_Id] = клиент.Id
+      JOIN Сотрудник сотр ON s.[Сотрудник_Id] = сотр.Id
+      WHERE s.Id = ${id};`
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении продажи:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при получении путевки: ${err.message}`)
   }
 }
 
@@ -31,7 +50,9 @@ export async function selectSaleByColumn(column) {
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении продажи:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -41,31 +62,35 @@ export async function insertSale(sale) {
   try {
     const result = await sql.query(`
             INSERT INTO Продажа (Дата_продажи, Дата_отправления, Скидка, Путевка_Id, Клиент_Id, Сотрудник_Id)
-            VALUES (${dateOfSale}, ${departureDate}, ${discount}, ${travelPackageId}, ${clientId}, ${employeeId})
+            VALUES ('${dateOfSale}', '${departureDate}', ${discount}, ${travelPackageId}, ${clientId}, ${employeeId})
             `)
     return 'Данные успешно добалены!'
   } catch (err) {
-    throw new Error('Ошибка при создании продажи:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
-export async function updateSale(id, sale) {
+export async function updateSale(sale) {
   await poolConnect()
-  const { dateOfSale, departureDate, discount, travelPackageId, clientId, employeeId } = sale
+  const { id, dateOfSale, departureDate, discount, travelPackageId, clientId, employeeId } = sale
   try {
-    const result = await sql.query(`
-            UPDATE Продажа
-            SET Дата_продажи = ${dateOfSale},
-                Дата_отправления = ${departureDate},
-                Скидка = ${discount},
-                Путевка_Id = ${travelPackageId},
-                Клиент_Id = ${clientId},
-                Сотрудник_Id = ${employeeId}                
-            WHERE Id = ${id}
-            `)
+    await sql.query(`
+      UPDATE Продажа
+      SET Дата_продажи = '${dateOfSale}',
+          Дата_отправления = '${departureDate}',
+          Скидка = '${discount}',
+          Путевка_Id = ${travelPackageId},
+          Клиент_Id = ${clientId},
+          Сотрудник_Id = ${employeeId}                
+      WHERE Id = ${id}
+      `)
     return 'Данные успешно обнавлены!'
   } catch (err) {
-    throw new Error('Ошибка при обновлении продажи:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -75,6 +100,8 @@ export async function deleteSale(id) {
     const result = await sql.query(`DELETE FROM Продажа WHERE Id = ${id}`)
     return `Продажа ${id} успешно удалена из таблицы!`
   } catch (err) {
-    throw new Error('Ошибка при удалении продажи:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }

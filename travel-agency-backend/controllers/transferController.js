@@ -44,10 +44,9 @@ export const insertTransfer = async (req, res) => {
 }
 
 export const updateTransfer = async (req, res) => {
-  const id = req.params.id
   const transferData = req.body
   try {
-    const transfer = await transferModel.updateTransfer(id, transferData)
+    const transfer = await transferModel.updateTransfer(transferData)
     res.json(transfer)
   } catch (error) {
     console.error('Ошибка при обновлении трансфера:', error)

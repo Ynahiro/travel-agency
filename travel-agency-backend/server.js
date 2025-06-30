@@ -1,6 +1,3 @@
-// const app = require('./app');
-// require('dotenv').config();
-
 import app from './app.js'
 
 const PORT = 3000

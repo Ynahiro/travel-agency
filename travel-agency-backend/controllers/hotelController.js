@@ -44,10 +44,9 @@ export const insertHotel = async (req, res) => {
 }
 
 export const updateHotel = async (req, res) => {
-  const id = req.params.id
   const hotelData = req.body
   try {
-    const hotel = await hotelModel.updateHotel(id, hotelData)
+    const hotel = await hotelModel.updateHotel(hotelData)
     res.json(hotel)
   } catch (error) {
     console.error('Ошибка при обновлении отеля:', error)

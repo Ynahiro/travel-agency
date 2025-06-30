@@ -6,7 +6,9 @@ export async function selectALLPassport() {
     const resut = await sql.query(`SELECT * FROM Паспорт`)
     return resut.recordset
   } catch (err) {
-    throw new Error('Ошибка при пролучение паспорта:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -18,7 +20,9 @@ export async function selectPassportById(id) {
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении паспорта:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -31,7 +35,9 @@ export async function selectPassportByColumn(column) {
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении паспорта:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -41,28 +47,32 @@ export async function insertPassport(passport) {
   try {
     const result = await sql.query(`
             INSERT INTO Паспорт (Серия_и_номер, Кем_выдан, Дата_выдачи)
-            VALUES (${seriesAndNumber}, ${issuedBy}, ${dateOfIssue})
+            VALUES ('${seriesAndNumber}', '${issuedBy}', '${dateOfIssue}')
             `)
     return 'Данные успешно добалены!'
   } catch (err) {
-    throw new Error('Ошибка при создании паспорта:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
-export async function updatePassport(id, passport) {
+export async function updatePassport(passport) {
   await poolConnect()
-  const { seriesAndNumber, issuedBy, dateOfIssue } = passport
+  const { id, seriesAndNumber, issuedBy, dateOfIssue } = passport
   try {
-    const result = await sql.query(`
-            UPDATE Паспорт
-            SET Серия_и_номер = ${seriesAndNumber},
-                Кем_выдан = ${issuedBy},
-                Дата_выдачи = ${dateOfIssue}                
-            WHERE Id = ${id}
-            `)
+    await sql.query(`
+      UPDATE Паспорт
+      SET Серия_и_номер = '${seriesAndNumber}',
+          Кем_выдан = '${issuedBy}',
+          Дата_выдачи = '${dateOfIssue}'
+      WHERE Id = ${id}
+      `)
     return 'Данные успешно обнавлены!'
   } catch (err) {
-    throw new Error('Ошибка при обновлении паспорта:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -72,6 +82,8 @@ export async function deletePassport(id) {
     const result = await sql.query(`DELETE FROM Паспорт WHERE Id = ${id}`)
     return `Паспорт ${id} успешно удален из таблицы!`
   } catch (err) {
-    throw new Error('Ошибка при удалении паспорта:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }

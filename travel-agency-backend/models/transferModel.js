@@ -5,8 +5,10 @@ export async function selectALLTransfer() {
   try {
     const resut = await sql.query(`SELECT * FROM Трансфер`)
     return resut.recordset
-  } catch (err) {
-    throw new Error('Ошибка при пролучение трансфера:', err)
+  }  catch (err) {
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -17,8 +19,10 @@ export async function selectTransferById(id) {
       `SELECT * FROM Трансфер WHERE Id = ${id}`
     )
     return result.recordset
-  } catch (err) {
-    throw new Error('Ошибка при получении трансфера:', err)
+  }  catch (err) {
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -31,7 +35,9 @@ export async function selectTransferByColumn(column) {
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении трансфера:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -41,27 +47,31 @@ export async function insertTransfer(transfer) {
   try {
     const result = await sql.query(`
             INSERT INTO Трансфер (Город, Тип_трансфера)
-            VALUES (${city}, ${typeOfTransfer})
+            VALUES ('${city}', '${typeOfTransfer}')
             `)
     return 'Данные успешно добалены!'
-  } catch (err) {
-    throw new Error('Ошибка при создании трансфера:', err)
+  }  catch (err) {
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
-export async function updateTransfer(id, transfer) {
+export async function updateTransfer(transfer) {
   await poolConnect()
-  const { city, typeOfTransfer } = transfer
+  const { id, city, typeOfTransfer } = transfer
   try {
-    const result = await sql.query(`
-            UPDATE Трансфер
-            SET Город = ${city},
-                Тип_трансфера = ${typeOfTransfer}              
-            WHERE Id = ${id}
-            `)
+    await sql.query(`
+      UPDATE Трансфер
+      SET Город = '${city}',
+          Тип_трансфера = '${typeOfTransfer}'              
+      WHERE Id = ${id}
+      `)
     return 'Данные успешно обнавлены!'
-  } catch (err) {
-    throw new Error('Ошибка при обновлении трансфера:', err)
+  }  catch (err) {
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -70,7 +80,9 @@ export async function deleteTransfer(id) {
   try {
     const result = await sql.query(`DELETE FROM Трансфер WHERE Id = ${id}`)
     return `Трансфер ${id} успешно удален из таблицы!`
-  } catch (err) {
-    throw new Error('Ошибка при удалении трансфера:', err)
+  }  catch (err) {
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }

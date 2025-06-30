@@ -6,17 +6,9 @@ export async function selectALLPost() {
     const resut = await sql.query(`SELECT * FROM Должность`)
     return resut.recordset
   } catch (err) {
-    throw new Error('Ошибка при пролучение должности:', err)
-  }
-}
+    console.error('Ошибка SQL:', err)
 
-export async function selectPostById(id) {
-  await poolConnect()
-  try {
-    const result = await sql.query(`SELECT * FROM Должность WHERE Id = ${id}`)
-    return result.recordset
-  } catch (err) {
-    throw new Error('Ошибка при получении должности:', err)
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -29,46 +21,54 @@ export async function selectPostByColumn(column) {
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении должности:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
 export async function insertPost(post) {
   await poolConnect()
-  const { title, salaty } = post
+  const { title, salary } = post
+  console.log(post)
   try {
     const result = await sql.query(`
             INSERT INTO Должность (Название, Зарплата)
-            VALUES (${title}, ${salaty})
+            VALUES ('${title}', ${salary})
             `)
     return 'Данные успешно добалены!'
   } catch (err) {
-    throw new Error('Ошибка при создании должности:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
-export async function updatePost(id, post) {
+export async function updatePost(post) {
   await poolConnect()
-  const { title, salaty } = post
+  const { title, salary } = post
   try {
-    const result = await sql.query(`
-            UPDATE Должность
-            SET Название = ${title},
-                Зарплата = ${salaty}              
-            WHERE Id = ${id}
-            `)
+    await sql.query(`
+      UPDATE Должность
+      SET Зарплата = ${salary}
+      WHERE Название = '${title}'
+      `)
     return 'Данные успешно обнавлены!'
   } catch (err) {
-    throw new Error('Ошибка при обновлении должности:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
-export async function deletePost(id) {
+export async function deletePost(title) {
   await poolConnect()
   try {
-    const result = await sql.query(`DELETE FROM Должность WHERE Id = ${id}`)
-    return `Должность ${id} успешно удалена из таблицы!`
+    const result = await sql.query(`DELETE FROM Должность WHERE Название = '${title}'`)
+    return `Должность ${title} успешно удалена из таблицы!`
   } catch (err) {
-    throw new Error('Ошибка при удалении должности:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }

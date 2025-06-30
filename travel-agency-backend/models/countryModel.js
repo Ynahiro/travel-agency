@@ -3,10 +3,12 @@ import { poolConnect, sql } from '../config/db.js'
 export async function selectALLCountry() {
   await poolConnect()
   try {
-    const resut = await sql.query(`SELECT * FROM Страна`)
-    return resut.recordset
+    const result = await sql.query(`SELECT * FROM Страна`)
+    return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при пролучение страны:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -14,11 +16,13 @@ export async function selectCountryById(id) {
   await poolConnect()
   try {
     const result = await sql.query(
-      `SELECT * FROM Страна WHERE Id = ${id}`
+      `SELECT * FROM Страна WHERE Id = '${id}'`
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении страны:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -31,7 +35,9 @@ export async function selectCountryByColumn(column) {
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении страны:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -41,35 +47,43 @@ export async function insertCountry(country) {
   try {
     const result = await sql.query(`
             INSERT INTO Страна (Название)
-            VALUES (${_country})
+            VALUES ('${_country}')
             `)
     return 'Данные успешно добалены!'
   } catch (err) {
-    throw new Error('Ошибка при создании страны:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
-export async function updateCountry(id, country) {
+export async function updateCountry(country) {
   await poolConnect()
-  const { _country } = country
+  const { id, _country } = country
   try {
-    const result = await sql.query(`
-            UPDATE Страна
-            SET Название = ${_country}              
-            WHERE Id = ${id}
-            `)
+    await sql.query(`
+      UPDATE Страна
+      SET Название = '${_country}'              
+      WHERE Id = '${id}'
+      `)
     return 'Данные успешно обнавлены!'
   } catch (err) {
-    throw new Error('Ошибка при обновлении страны:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
 export async function deleteCountry(id) {
   await poolConnect()
   try {
-    const result = await sql.query(`DELETE FROM Страна WHERE Id = ${id}`)
-    return `Страна ${id} успешно удалена из таблицы!`
+    const result = await sql.query(
+      `DELETE FROM Страна WHERE Название = '${id}'`
+    )
+    return `Страна '${title}' успешно удалена из таблицы!`
   } catch (err) {
-    throw new Error('Ошибка при удалении страны:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }

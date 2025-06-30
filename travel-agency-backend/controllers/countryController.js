@@ -44,10 +44,9 @@ export const insertCountry = async (req, res) => {
 }
 
 export const updateCountry = async (req, res) => {
-  const id = req.params.id
   const countryData = req.body
   try {
-    const country = await countryModel.updateCountry(id, countryData)
+    const country = await countryModel.updateCountry(countryData)
     res.json(country)
   } catch (error) {
     console.error('Ошибка при обновлении страны:', error)

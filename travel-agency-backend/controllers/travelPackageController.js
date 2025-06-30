@@ -44,10 +44,9 @@ export const insertTravelPackage = async (req, res) => {
 }
 
 export const updateTravelPackage = async (req, res) => {
-  const id = req.params.id
   const travelPackageData = req.body
   try {
-    const travelPackage = await travelPackageModel.updateTravelPackage(id, travelPackageData)
+    const travelPackage = await travelPackageModel.updateTravelPackage(travelPackageData)
     res.json(travelPackage)
   } catch (error) {
     console.error('Ошибка при обновлении путевки:', error)
@@ -62,6 +61,36 @@ export const deleteTravelPackage = async (req, res) => {
     res.json(travelPackage)
   } catch (error) {
     console.error('Ошибка при удалении путевки:', error)
+    res.status(500).json({ message: 'Ошибка сервера' })
+  }
+}
+
+export const selectMostExpensiveTravelPackage = async (req, res) => {
+  try {
+    const travelPackage = await travelPackageModel.selectMostExpensiveTravelPackage()
+    res.json(travelPackage)
+  } catch (error) {
+    console.log('Ошибка при поиске самой дорогой путевки', error)
+    res.status(500).json({ message: 'Ошибка сервера' })
+  }
+}
+
+export const selectTheMostPopularTravelPackage = async (req, res) => {
+  try {
+    const travelPackage = await travelPackageModel.selectTheMostPopularTravelPackage()
+    res.json(travelPackage)
+  } catch (error) {
+    console.log('Ошибка при получении топа путевок:', error)
+    res.status(500).json({ message: 'Ошибка сервера' })
+  }
+}
+
+export const selectDetailedTravelPackage = async (req, res) => {
+  try {
+    const travelPackage = await travelPackageModel.selectDetailedTravelPackage()
+    res.json(travelPackage)
+  } catch (error) {
+    console.log('Ошибка при получении полных путевок:', error)
     res.status(500).json({ message: 'Ошибка сервера' })
   }
 }

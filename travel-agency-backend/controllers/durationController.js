@@ -44,10 +44,9 @@ export const insertDuration = async (req, res) => {
 }
 
 export const updateDuration = async (req, res) => {
-  const id = req.params.id
   const durationData = req.body
   try {
-    const duration = await durationModel.updateDuration(id, durationData)
+    const duration = await durationModel.updateDuration(durationData)
     res.json(duration)
   } catch (error) {
     console.error('Ошибка при обновлении длительности:', error)

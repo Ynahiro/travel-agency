@@ -10,17 +10,6 @@ export const selectALLPost = async (req, res) => {
   }
 }
 
-export const selectPostById = async (req, res) => {
-  const id = req.params.id
-  try {
-    const post = await postModel.selectPostById(id)
-    res.json(post)
-  } catch (error) {
-    console.error('Ошибка при получении должности:', error)
-    res.status(500).json({ message: 'Ошибка сервера' })
-  }
-}
-
 export const selectPostByColumn = async (req, res) => {
   const columnData = req.body
   try {
@@ -44,10 +33,9 @@ export const insertPost = async (req, res) => {
 }
 
 export const updatePost = async (req, res) => {
-  const id = req.params.id
   const postData = req.body
   try {
-    const post = await postModel.updatePost(id, postData)
+    const post = await postModel.updatePost(postData)
     res.json(post)
   } catch (error) {
     console.error('Ошибка при обновлении должности:', error)
@@ -56,9 +44,9 @@ export const updatePost = async (req, res) => {
 }
 
 export const deletePost = async (req, res) => {
-  const id = req.params.id
+  const title = req.params.title
   try {
-    const post = await postModel.deletePost(id)
+    const post = await postModel.deletePost(title)
     res.json(post)
   } catch (error) {
     console.error('Ошибка при удалении должности:', error)

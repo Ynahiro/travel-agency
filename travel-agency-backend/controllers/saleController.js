@@ -44,10 +44,9 @@ export const insertSale = async (req, res) => {
 }
 
 export const updateSale = async (req, res) => {
-  const id = req.params.id
   const saleData = req.body
   try {
-    const sale = await saleModel.updateSale(id, saleData)
+    const sale = await saleModel.updateSale(saleData)
     res.json(sale)
   } catch (error) {
     console.error('Ошибка при обновлении скидки:', error)

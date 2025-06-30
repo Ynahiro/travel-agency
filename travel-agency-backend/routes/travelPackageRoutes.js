@@ -4,8 +4,9 @@ import * as travelPackageController from '../controllers/travelPackageController
 const router = express.Router()
 
 router.get('/', travelPackageController.selectALLTravelPackage)
-router.get('/:id', travelPackageController.selectTravelPackageById)
-router.get('/:column', travelPackageController.selectTravelPackageByColumn)
+router.get('/expensive', travelPackageController.selectMostExpensiveTravelPackage)
+router.get('/top', travelPackageController.selectTheMostPopularTravelPackage)
+router.get('/details', travelPackageController.selectDetailedTravelPackage)
 router.post('/', travelPackageController.insertTravelPackage)
 router.put('/:id', travelPackageController.updateTravelPackage)
 router.delete('/:id', travelPackageController.deleteTravelPackage)

@@ -6,7 +6,9 @@ export async function selectALLEmployee() {
     const resut = await sql.query(`SELECT * FROM Сотрудник`)
     return resut.recordset
   } catch (err) {
-    throw new Error('Ошибка при пролучение сотрудника:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -18,7 +20,9 @@ export async function selectEmployeeById(id) {
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении сотрудника:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -31,7 +35,9 @@ export async function selectEmployeeByColumn(column) {
     )
     return result.recordset
   } catch (err) {
-    throw new Error('Ошибка при получении сотрудника:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -40,32 +46,36 @@ export async function insertEmployee(employee) {
   const { surname, name, patronymic, phoneNum, age, post } = employee
   try {
     const result = await sql.query(`
-            INSERT INTO Сотрудник (Фамилия, Имя, Отчество, Телефон, Возраста, Должность)
-            VALUES (${surname}, ${name}, ${patronymic}, ${phoneNum}, ${age}, ${post})
+            INSERT INTO Сотрудник (Фамилия, Имя, Отчество, Телефон, Возраст, Должность)
+            VALUES ('${surname}', '${name}', '${patronymic}', '${phoneNum}', ${age}, '${post}')
             `)
     return 'Данные успешно добалены!'
   } catch (err) {
-    throw new Error('Ошибка при создании сотрудника:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
-export async function updateEmployee(id, employee) {
+export async function updateEmployee(employee) {
   await poolConnect()
-  const { surname, name, patronymic, phoneNum, age, post } = employee
+  const { id, surname, name, patronymic, phoneNum, age, post } = employee
   try {
-    const result = await sql.query(`
-            UPDATE Сотрудник
-            SET Фамилия = ${surname},
-                Имя = ${name},
-                Отчество = ${patronymic},
-                Телефон = ${phoneNum},
-                Возраста = ${age},
-                Должность = ${post}               
-            WHERE Id = ${id}
-            `)
+    await sql.query(`
+      UPDATE Сотрудник
+      SET Фамилия = '${surname}',
+          Имя = '${name}',
+          Отчество = '${patronymic}',
+          Телефон = '${phoneNum}',
+          Возраст = ${age},
+          Должность = '${post}'
+      WHERE Id = ${id}
+      `)
     return 'Данные успешно обнавлены!'
   } catch (err) {
-    throw new Error('Ошибка при обновлении сотрудника:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }
 
@@ -75,6 +85,8 @@ export async function deleteEmployee(id) {
     const result = await sql.query(`DELETE FROM Сотрудник WHERE Id = ${id}`)
     return `Сотрудник ${id} успешно удален из таблицы!`
   } catch (err) {
-    throw new Error('Ошибка при удалении сотрудника:', err)
+    console.error('Ошибка SQL:', err)
+
+    throw new Error(`Ошибка при создании путевки: ${err.message}`)
   }
 }

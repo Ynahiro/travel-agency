@@ -44,10 +44,9 @@ export const insertPassport = async (req, res) => {
 }
 
 export const updatePassport = async (req, res) => {
-  const id = req.params.id
   const passportData = req.body
   try {
-    const passport = await passportModel.updatePassport(id, passportData)
+    const passport = await passportModel.updatePassport(passportData)
     res.json(passport)
   } catch (error) {
     console.error('Ошибка при обновлении паспорта:', error)

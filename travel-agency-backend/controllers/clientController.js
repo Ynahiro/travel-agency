@@ -44,10 +44,9 @@ export const insertClient = async (req, res) => {
 }
 
 export const updateClient = async (req, res) => {
-  const id = req.params.id
   const clientData = req.body
   try {
-    const clients = await clientModel.updateClient(id, clientData)
+    const clients = await clientModel.updateClient(clientData)
     res.json(clients)
   } catch(error) {
     console.error('Ошибка при обновлении клиента:', error)
